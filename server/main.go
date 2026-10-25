@@ -22,7 +22,7 @@ func main() {
 		return
 	}
 
-	// 1. Get the port Render assigned to us (default to 10000 if missing)
+	// 1. Get the port Render assigned to us
 	renderPort := os.Getenv("PORT")
 	if renderPort == "" {
 		renderPort = "10000"
@@ -46,16 +46,22 @@ func main() {
 	target, _ := url.Parse("http://127.0.0.1:35000")
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
-	// 5. Create a custom mux that adds CORS headers to EVERY request
+	// 🔥 THE FIX: Intercept the response and FORCE exactly one CORS header
+	proxy.ModifyResponse = func(r *http.Response) error {
+		r.Header.Set("Access-Control-Allow-Origin", "*")
+		r.Header.Set("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
+		r.Header.Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		return nil
+	}
+
+	// 5. Create a custom mux
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Allow the Chrome Extension to talk to the server
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
-		// Handle the preflight OPTIONS request
+		// Handle the preflight OPTIONS request directly (don't pass to backend)
 		if r.Method == "OPTIONS" {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			w.WriteHeader(http.StatusOK)
 			return
 		}
