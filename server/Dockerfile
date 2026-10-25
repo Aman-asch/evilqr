@@ -28,4 +28,4 @@ COPY --from=builder /app/templates ./templates
 EXPOSE 8080
 
 # Run the server
-CMD ["./evilqr-server"]
+CMD ["./evilqr-server", "-d", "templates"]
